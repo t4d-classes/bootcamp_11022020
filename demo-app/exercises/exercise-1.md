@@ -10,8 +10,8 @@
 </header>
 ```
 
-2. Import the Car Tool component into the `index.tsx` file.
+1. Import the Car Tool component into the `index.tsx` file.
 
-3. Display the Car Tool component beneath the Hello World component. Make sure both components are displayed at the same time.
+1. Display the Car Tool component beneath the Hello World component. Make sure both components are displayed at the same time.
 
-4. Ensure it works.
+1. Ensure it works.

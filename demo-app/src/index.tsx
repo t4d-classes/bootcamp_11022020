@@ -1,11 +1,15 @@
 import React from "react";
 import { render } from "react-dom";
 
-import { HelloWorld } from "./components/HelloWorld";
+import { ColorTool } from "./components/ColorTool";
+import { CarTool } from "./components/CarTool";
 
 render(
-  // React.createElement(HelloWorld),
-  <HelloWorld />,
+  // React.createElement(ColorTool),
+  <>
+    <ColorTool />
+    <CarTool />
+  </>,
   // "#root" - CSS selector - used to find an element with an id of 'root'
   document.querySelector("#root")
 );
