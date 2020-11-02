@@ -1,8 +1,10 @@
 import React from "react";
 
+import "./ColorTool.css";
+
 export function ColorTool() {
   return (
-    <>
+    <div className="color-tool">
       <header>
         <h1>Color Tool</h1>
       </header>
@@ -14,6 +16,6 @@ export function ColorTool() {
         <li>brown</li>
         <li>aqua</li>
       </ul>
-    </>
+    </div>
   );
 }

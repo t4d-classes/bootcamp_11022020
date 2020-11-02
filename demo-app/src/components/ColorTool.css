@@ -1,0 +1,13 @@
+.color-tool h1 {
+  font-size: 2rem;
+  font-weight: bold;
+}
+
+.color-tool ul {
+  list-style-type: disc;
+  list-style-position: outside;
+}
+
+.color-tool li {
+  margin-left: 20px;
+}
