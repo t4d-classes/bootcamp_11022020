@@ -7,6 +7,7 @@ import "./CarTable.css";
 
 export type CarTableProps = {
   cars: Car[];
+  onDeleteCar: (carId: number) => void;
 };
 
 export function CarTable(props: CarTableProps) {
@@ -20,11 +21,12 @@ export function CarTable(props: CarTableProps) {
           <th className="col-header">Year</th>
           <th className="col-header">Color</th>
           <th className="col-header">Price</th>
+          <th className="col-header">Actions</th>
         </tr>
       </thead>
       <tbody>
         {props.cars.map((car) => (
-          <CarViewRow key={car.id} car={car} />
+          <CarViewRow key={car.id} car={car} onDeleteCar={props.onDeleteCar} />
         ))}
       </tbody>
     </table>
