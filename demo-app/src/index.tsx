@@ -19,6 +19,7 @@ render(
   <>
     {/* React.createElement(ColorTool, { colors: colorList, headerText: 'Color Tool }) */}
     <ColorTool colors={colorList} headerText="Color Tool" />
+    <ColorTool colors={colorList} headerText="Color Tool" />
     <CarTool />
   </>,
   // "#root" - CSS selector - used to find an element with an id of 'root'
