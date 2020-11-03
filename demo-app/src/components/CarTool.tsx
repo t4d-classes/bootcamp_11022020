@@ -1,11 +1,19 @@
-import React from 'react';
+import React from "react";
 
-export function CarTool() {
+import { Car } from "../models/cars";
 
+import { ToolHeader } from "./ToolHeader";
+import { CarTable } from "./CarTable";
+
+export type CarToolProps = {
+  cars: Car[];
+};
+
+export function CarTool({ cars }: CarToolProps) {
   return (
-    <header>
-      <h1>Car Tool</h1>
-    </header>
+    <>
+      <ToolHeader headerText="Car Tool" />
+      <CarTable cars={cars} />
+    </>
   );
-
 }

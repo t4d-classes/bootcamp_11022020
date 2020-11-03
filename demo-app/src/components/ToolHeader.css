@@ -1,0 +1,9 @@
+.tool-header {
+  margin-top: 20px;
+  margin-bottom: 10px;
+}
+
+.tool-header h1 {
+  font-weight: bold;
+  font-size: 2rem;
+}
