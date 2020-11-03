@@ -52,7 +52,7 @@ export function ColorForm(props: ColorFormProps) {
       <div>
         <label htmlFor="hexcode-input">Hexcode</label>
         <input
-          type="number"
+          type="text"
           id="hexcode-input"
           name="hexcode"
           value={colorForm.hexcode}
