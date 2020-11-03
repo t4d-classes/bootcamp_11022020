@@ -3,6 +3,7 @@ import React from "react";
 import { Color } from "../models/colors";
 import { ToolHeader } from "./ToolHeader";
 import { ColorList } from "./ColorList";
+import { ColorForm } from "./ColorForm";
 
 import "./ColorTool.css";
 
@@ -20,6 +21,7 @@ export function ColorTool({ headerText, colors }: ColorToolProps) {
     <div className="color-tool">
       <ToolHeader headerText={headerText} />
       <ColorList colors={colors} />
+      <ColorForm />
     </div>
   );
 }
