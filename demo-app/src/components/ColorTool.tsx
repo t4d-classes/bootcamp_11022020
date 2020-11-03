@@ -1,6 +1,6 @@
-import React from "react";
+import React, { useState } from "react";
 
-import { Color } from "../models/colors";
+import { Color, NewColor } from "../models/colors";
 import { ToolHeader } from "./ToolHeader";
 import { ColorList } from "./ColorList";
 import { ColorForm } from "./ColorForm";
@@ -12,16 +12,27 @@ export type ColorToolProps = {
   headerText?: string;
 };
 
-export function ColorTool({ headerText, colors }: ColorToolProps) {
-  // const headerText = props.headerText;
-  // const colors = props.colors;
-  // const { headerText, colors } = props;
+export function ColorTool({
+  headerText,
+  colors: initialColors,
+}: ColorToolProps) {
+  const [colors, setColors] = useState([...initialColors]);
+
+  const addColor = (newColor: NewColor) => {
+    setColors([
+      ...colors,
+      {
+        ...newColor,
+        id: Math.max(...colors.map((c) => c.id), 0) + 1,
+      },
+    ]);
+  };
 
   return (
     <div className="color-tool">
       <ToolHeader headerText={headerText} />
       <ColorList colors={colors} />
-      <ColorForm />
+      <ColorForm buttonText="Add Color" onSubmitColor={addColor} />
     </div>
   );
 }

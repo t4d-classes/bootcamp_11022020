@@ -1,8 +1,13 @@
 import React, { useState, ChangeEvent } from "react";
 
-export type ColorFormProps = {};
+import { NewColor } from "../models/colors";
 
-export function ColorForm() {
+export type ColorFormProps = {
+  buttonText: string;
+  onSubmitColor: (newColor: NewColor) => void;
+};
+
+export function ColorForm(props: ColorFormProps) {
   const [colorForm, setColorForm] = useState(
     {
       name: "",
@@ -21,7 +26,16 @@ export function ColorForm() {
     });
   };
 
-  console.log(colorForm);
+  const submitColor = () => {
+    props.onSubmitColor({
+      ...colorForm,
+    });
+
+    setColorForm({
+      name: "",
+      hexcode: "",
+    });
+  };
 
   return (
     <form>
@@ -38,13 +52,16 @@ export function ColorForm() {
       <div>
         <label htmlFor="hexcode-input">Hexcode</label>
         <input
-          type="text"
+          type="number"
           id="hexcode-input"
           name="hexcode"
           value={colorForm.hexcode}
           onChange={change}
         />
       </div>
+      <button type="button" onClick={submitColor}>
+        {props.buttonText}
+      </button>
     </form>
   );
 }
