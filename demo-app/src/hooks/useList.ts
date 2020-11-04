@@ -2,30 +2,30 @@ import { useState } from "react";
 
 import { Item } from "../models/item";
 
-export type AppendItem<S> = (newItem: Omit<S, "id">) => void;
+export type AppendItem<E extends Item> = (newItem: Omit<E, "id">) => void;
 
-export type ReplaceItem<S> = (item: S) => void;
+export type ReplaceItem<A extends Item> = (item: A) => void;
 
 export type RemoveItem = (itemId: number) => void;
 
-export type UseList = <T extends Item>(
-  initialItems: T[]
-) => [T[], AppendItem<T>, ReplaceItem<T>, RemoveItem];
+export type UseList = <G extends Item>(
+  initialItems: G[]
+) => [G[], AppendItem<G>, ReplaceItem<G>, RemoveItem];
 
-export const useList: UseList = <T extends Item>(initialItems: T[]) => {
-  const [items, setItems] = useState(initialItems);
+export const useList: UseList = <J extends Item>(startingItems: J[]) => {
+  const [items, setItems] = useState(startingItems);
 
-  const appendItem: AppendItem<T> = (newItem) => {
+  const appendItem: AppendItem<J> = (newItem) => {
     setItems([
       ...items,
       {
         ...newItem,
         id: Math.max(...items.map((c) => c.id), 0) + 1,
-      } as T,
+      } as J,
     ]);
   };
 
-  const replaceItem: ReplaceItem<T> = (item) => {
+  const replaceItem: ReplaceItem<J> = (item) => {
     const itemIndex = items.findIndex((c) => c.id === item.id);
     const newItems = [...items];
     newItems[itemIndex] = item;
