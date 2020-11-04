@@ -1,6 +1,7 @@
-import React, { useState, ChangeEvent } from "react";
+import React from "react";
 
 import { NewColor } from "../models/colors";
+import { useForm } from "../hooks/useForm";
 
 export type ColorFormProps = {
   buttonText: string;
@@ -8,33 +9,17 @@ export type ColorFormProps = {
 };
 
 export function ColorForm(props: ColorFormProps) {
-  const [colorForm, setColorForm] = useState(
-    {
-      name: "",
-      hexcode: "",
-    } /* initial value of colorForm */
-  );
-
-  // const colorForm = colorFormState[0];
-  // const setColorForm = colorFormState[1];
-
-  const change = (e: ChangeEvent<HTMLInputElement>) => {
-    setColorForm({
-      ...colorForm, // object spread operation, it copies the properties from colorForm into the new object
-      [e.target.name]:
-        e.target.type === "number" ? Number(e.target.value) : e.target.value,
-    });
-  };
+  const [colorForm, change, resetColorForm] = useForm({
+    name: "",
+    hexcode: "",
+  });
 
   const submitColor = () => {
     props.onSubmitColor({
       ...colorForm,
     });
 
-    setColorForm({
-      name: "",
-      hexcode: "",
-    });
+    resetColorForm();
   };
 
   return (
