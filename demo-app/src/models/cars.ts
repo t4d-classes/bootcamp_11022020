@@ -1,5 +1,6 @@
-export type Car = {
-  id: number;
+import { Item } from "./item";
+
+export type NewCar = {
   make: string;
   model: string;
   year: number;
@@ -7,4 +8,4 @@ export type Car = {
   price: number;
 };
 
-export type NewCar = Omit<Car, "id">;
+export type Car = NewCar & Item;
