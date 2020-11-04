@@ -12,6 +12,7 @@ export type CarToolProps = {
 
 export function CarTool({ cars: initialCars }: CarToolProps) {
   const [cars, setCars] = useState([...initialCars]);
+  const [editCarId, setEditCarId] = useState(-1);
 
   const addCar = (newCar: NewCar) => {
     setCars([
@@ -27,10 +28,19 @@ export function CarTool({ cars: initialCars }: CarToolProps) {
     setCars(cars.filter((c) => c.id !== carId));
   };
 
+  const editCar = (carId: number) => {
+    setEditCarId(carId);
+  };
+
   return (
     <>
       <ToolHeader headerText="Car Tool" />
-      <CarTable cars={cars} onDeleteCar={deleteCar} />
+      <CarTable
+        cars={cars}
+        editCarId={editCarId}
+        onDeleteCar={deleteCar}
+        onEditCar={editCar}
+      />
       <CarForm buttonText="Add Car" onSubmitCar={addCar} />
     </>
   );
