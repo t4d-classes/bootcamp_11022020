@@ -2,10 +2,10 @@ import React from "react";
 import { render } from "react-dom";
 
 import { Color } from "./models/colors";
-import { Car } from "./models/cars";
 
 import { ColorTool } from "./components/ColorTool";
 import { CarTool } from "./components/CarTool";
+import { CarStoreProvider } from "./contexts/carStoreContext";
 
 const colorList: Color[] = [
   { id: 1, name: "red", hexcode: "FF0000" },
@@ -16,31 +16,12 @@ const colorList: Color[] = [
   { id: 6, name: "aqua", hexcode: "00FFFF" },
 ];
 
-const carList: Car[] = [
-  {
-    id: 1,
-    make: "Ford",
-    model: "Fusion Hybrid",
-    year: 2019,
-    color: "white",
-    price: 45000,
-  },
-  {
-    id: 2,
-    make: "Tesla",
-    model: "S",
-    year: 2020,
-    color: "red",
-    price: 100000,
-  },
-];
-
 render(
   <>
-    {/* React.createElement(ColorTool, { colors: colorList, headerText: 'Color Tool }) */}
     <ColorTool colors={colorList} headerText="Color Tool" />
-    <CarTool cars={carList} />
+    <CarStoreProvider>
+      <CarTool />
+    </CarStoreProvider>
   </>,
-  // "#root" - CSS selector - used to find an element with an id of 'root'
   document.querySelector("#root")
 );
