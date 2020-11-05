@@ -1,19 +1,13 @@
 import React from "react";
 import { render } from "react-dom";
+import { Provider } from "react-redux";
 
-import { ColorTool } from "./components/ColorTool";
-import { ColorStoreProvider } from "./contexts/colorStoreContext";
-import { CarTool } from "./components/CarTool";
-import { CarStoreProvider } from "./contexts/carStoreContext";
+import { calcToolStore } from "./stores/calcToolStore";
+import { CalcToolContainer } from "./containers/CalcToolContainer";
 
 render(
-  <>
-    <ColorStoreProvider>
-      <ColorTool headerText="Color Tool" />
-    </ColorStoreProvider>
-    <CarStoreProvider>
-      <CarTool />
-    </CarStoreProvider>
-  </>,
+  <Provider store={calcToolStore}>
+    <CalcToolContainer />
+  </Provider>,
   document.querySelector("#root")
 );
