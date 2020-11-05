@@ -4,4 +4,6 @@
 
 2. Add a button to each list item in the Color List. When the button is clicked remove the color from the list.
 
-3. Ensure it all works!
+3. Clean up all unused imports.
+
+4. Ensure it all works!
