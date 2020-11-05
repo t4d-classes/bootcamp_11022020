@@ -1,37 +1,23 @@
-import React, { useState } from "react";
+import React from "react";
 
-import { Color, NewColor } from "../models/colors";
 import { ToolHeader } from "./ToolHeader";
 import { ColorList } from "./ColorList";
 import { ColorForm } from "./ColorForm";
+import { useColorStoreContext } from "../contexts/colorStoreContext";
 
 import "./ColorTool.css";
 
 export type ColorToolProps = {
-  colors: Color[];
   headerText?: string;
 };
 
-export function ColorTool({
-  headerText,
-  colors: initialColors,
-}: ColorToolProps) {
-  const [colors, setColors] = useState([...initialColors]);
-
-  const addColor = (newColor: NewColor) => {
-    setColors([
-      ...colors,
-      {
-        ...newColor,
-        id: Math.max(...colors.map((c) => c.id), 0) + 1,
-      },
-    ]);
-  };
+export function ColorTool({ headerText }: ColorToolProps) {
+  const { colors, addColor, deleteColor } = useColorStoreContext();
 
   return (
     <div className="color-tool">
       <ToolHeader headerText={headerText} />
-      <ColorList colors={colors} />
+      <ColorList colors={colors} onDeleteColor={deleteColor} />
       <ColorForm buttonText="Add Color" onSubmitColor={addColor} />
     </div>
   );
