@@ -1,21 +1,19 @@
 import React from "react";
 
+import { Car, NewCar } from "../models/cars";
 import { ToolHeader } from "./ToolHeader";
 import { CarTable } from "./CarTable";
 import { CarForm } from "./CarForm";
 
-import { useCarStoreContext } from "../contexts/carStoreContext";
+export type CarToolProps = {
+  cars: Car[];
+  editCarId: number;
+  onAddCar: (car: NewCar) => void;
+  onEditCar: (carId: number) => void;
+};
 
-export function CarTool() {
-  const {
-    cars,
-    editCarId,
-    addCar,
-    saveCar,
-    deleteCar,
-    editCar,
-    cancelCar,
-  } = useCarStoreContext();
+export function CarTool(props: CarToolProps) {
+  const { cars, editCarId, onAddCar: addCar, onEditCar: editCar } = props;
 
   return (
     <>
@@ -23,10 +21,10 @@ export function CarTool() {
       <CarTable
         cars={cars}
         editCarId={editCarId}
-        onDeleteCar={deleteCar}
+        onDeleteCar={() => null}
         onEditCar={editCar}
-        onSaveCar={saveCar}
-        onCancelCar={cancelCar}
+        onSaveCar={() => null}
+        onCancelCar={() => null}
       />
       <CarForm buttonText="Add Car" onSubmitCar={addCar} />
     </>

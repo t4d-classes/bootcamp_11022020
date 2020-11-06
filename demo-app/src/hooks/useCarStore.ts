@@ -3,15 +3,20 @@ import { useState } from "react";
 import { Car, NewCar } from "../models/cars";
 import { useList } from "../hooks/useList";
 
-export type CarStore = {
+export type CarStoreState = {
   cars: Car[];
   editCarId: number;
+};
+
+export type CarStoreActions = {
   addCar: (car: NewCar) => void;
   saveCar: (car: Car) => void;
   deleteCar: (carId: number) => void;
   editCar: (carId: number) => void;
   cancelCar: () => void;
 };
+
+export type CarStore = CarStoreState & CarStoreActions;
 
 export const useCarStore = (initialCars: Car[]) => {
   const [cars, appendCar, replaceCar, removeCar] = useList([...initialCars]);
