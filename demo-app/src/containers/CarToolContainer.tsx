@@ -4,7 +4,10 @@ import { useSelector, useDispatch } from "react-redux";
 
 import {
   createAppendCarAction,
+  createReplaceCarAction,
+  createRemoveCarAction,
   createEditCarAction,
+  createCancelCarAction,
 } from "../actions/carToolActions";
 import { CarTool } from "../components/CarTool";
 import { CarToolState } from "../models/carStore";
@@ -20,7 +23,10 @@ export function CarToolContainer() {
   const boundActionProps = bindActionCreators(
     {
       onAddCar: createAppendCarAction,
+      onSaveCar: createReplaceCarAction,
+      onDeleteCar: createRemoveCarAction,
       onEditCar: createEditCarAction,
+      onCancelCar: createCancelCarAction,
     },
     useDispatch()
   );

@@ -1,27 +1,38 @@
 import { Reducer, combineReducers } from "redux";
 
 import { Car } from "../models/cars";
-import { CarToolState } from "../models/carStore";
 import {
   CarActions,
   isAppendCarAction,
   isEditCarAction,
+  isCancelCarAction,
+  isRemoveCarAction,
+  isReplaceCarAction,
+  APPEND_CAR_ACTION,
+  REPLACE_CAR_ACTION,
+  REMOVE_CAR_ACTION,
 } from "../actions/carToolActions";
 
 export const carsReducer: Reducer<Car[], CarActions> = (cars = [], action) => {
-  let newCars = cars;
-
-  if (isAppendCarAction(action)) {
-    newCars = [
-      ...newCars,
-      {
-        id: Math.max(...newCars.map((c) => c.id), 0) + 1,
-        ...action.payload.car,
-      },
-    ];
+  switch (action.type) {
+    case APPEND_CAR_ACTION:
+      return [
+        ...cars,
+        {
+          id: Math.max(...cars.map((c) => c.id), 0) + 1,
+          ...action.payload.car,
+        },
+      ];
+    case REPLACE_CAR_ACTION:
+      const carIndex = cars.findIndex((c) => c.id === action.payload.car.id);
+      const newCars = [...cars];
+      newCars[carIndex] = action.payload.car;
+      return newCars;
+    case REMOVE_CAR_ACTION:
+      return cars.filter((c) => c.id !== action.payload.carId);
+    default:
+      return cars;
   }
-
-  return newCars;
 };
 
 export const editCarIdReducer: Reducer<number, CarActions> = (
@@ -30,6 +41,15 @@ export const editCarIdReducer: Reducer<number, CarActions> = (
 ) => {
   if (isEditCarAction(action)) {
     return action.payload.carId;
+  }
+
+  if (
+    isCancelCarAction(action) ||
+    isAppendCarAction(action) ||
+    isReplaceCarAction(action) ||
+    isRemoveCarAction(action)
+  ) {
+    return -1;
   }
 
   return editCarId;

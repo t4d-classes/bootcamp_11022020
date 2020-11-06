@@ -9,11 +9,22 @@ export type CarToolProps = {
   cars: Car[];
   editCarId: number;
   onAddCar: (car: NewCar) => void;
+  onSaveCar: (car: Car) => void;
+  onDeleteCar: (carId: number) => void;
   onEditCar: (carId: number) => void;
+  onCancelCar: () => void;
 };
 
 export function CarTool(props: CarToolProps) {
-  const { cars, editCarId, onAddCar: addCar, onEditCar: editCar } = props;
+  const {
+    cars,
+    editCarId,
+    onAddCar: addCar,
+    onSaveCar: saveCar,
+    onDeleteCar: deleteCar,
+    onEditCar: editCar,
+    onCancelCar: cancelCar,
+  } = props;
 
   return (
     <>
@@ -21,10 +32,10 @@ export function CarTool(props: CarToolProps) {
       <CarTable
         cars={cars}
         editCarId={editCarId}
-        onDeleteCar={() => null}
+        onDeleteCar={deleteCar}
         onEditCar={editCar}
-        onSaveCar={() => null}
-        onCancelCar={() => null}
+        onSaveCar={saveCar}
+        onCancelCar={cancelCar}
       />
       <CarForm buttonText="Add Car" onSubmitCar={addCar} />
     </>
