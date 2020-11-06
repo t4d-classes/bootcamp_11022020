@@ -2,13 +2,13 @@ import React from "react";
 import { render } from "react-dom";
 import { Provider } from "react-redux";
 
-import { CarToolContainer } from "./containers/CarToolContainer";
+import { CarTool } from "./components/CarTool";
 import { carToolStore } from "./stores/carToolStore";
 
 render(
   <>
     <Provider store={carToolStore}>
-      <CarToolContainer />
+      <CarTool />
     </Provider>
   </>,
   document.querySelector("#root")
