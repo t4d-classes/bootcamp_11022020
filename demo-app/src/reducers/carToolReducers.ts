@@ -1,5 +1,6 @@
 import { Reducer, combineReducers } from "redux";
 
+import { CarsSort, SortDir } from "../models/carStore";
 import { Car } from "../models/cars";
 import {
   CarActions,
@@ -11,6 +12,7 @@ import {
   APPEND_CAR_ACTION,
   REPLACE_CAR_ACTION,
   REMOVE_CAR_ACTION,
+  isSortCarsAction,
 } from "../actions/carToolActions";
 
 export const carsReducer: Reducer<Car[], CarActions> = (cars = [], action) => {
@@ -66,7 +68,32 @@ export const editCarIdReducer: Reducer<number, CarActions> = (
 //   };
 // };
 
+export const carsSortReducer: Reducer<CarsSort, CarActions> = (
+  carsSort = { sortCol: "id", sortDir: "asc" },
+  action
+) => {
+  if (isSortCarsAction(action)) {
+    if (
+      carsSort.sortCol === action.payload.sortCol &&
+      carsSort.sortDir === "asc"
+    ) {
+      return {
+        sortCol: action.payload.sortCol,
+        sortDir: "desc",
+      };
+    } else {
+      return {
+        sortCol: action.payload.sortCol,
+        sortDir: "asc",
+      };
+    }
+  }
+
+  return carsSort;
+};
+
 export const carToolReducer = combineReducers({
   cars: carsReducer,
   editCarId: editCarIdReducer,
+  carsSort: carsSortReducer,
 });

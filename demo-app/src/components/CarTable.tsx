@@ -5,14 +5,23 @@ import { CarEditRow } from "./CarEditRow";
 import { CarViewRow } from "./CarViewRow";
 
 import "./CarTable.css";
+import { CarsSort } from "../models/carStore";
 
 export type CarTableProps = {
   cars: Car[];
   editCarId: number;
+  carsSort: CarsSort;
   onEditCar: (carId: number) => void;
   onDeleteCar: (carId: number) => void;
   onSaveCar: (car: Car) => void;
   onCancelCar: () => void;
+  onSortCars: (car: keyof Car) => void;
+};
+
+const sortArrow = (carsSort: CarsSort, sortCol: keyof Car) => {
+  return (
+    carsSort.sortCol === sortCol && (carsSort.sortDir === "asc" ? "v" : "^")
+  );
 };
 
 export function CarTable(props: CarTableProps) {
@@ -20,12 +29,36 @@ export function CarTable(props: CarTableProps) {
     <table id="car-table">
       <thead>
         <tr>
-          <th className="col-header">Id</th>
-          <th className="col-header">Make</th>
-          <th className="col-header">Model</th>
-          <th className="col-header">Year</th>
-          <th className="col-header">Color</th>
-          <th className="col-header">Price</th>
+          <th className="col-header">
+            <button type="button" onClick={() => props.onSortCars("id")}>
+              Id {sortArrow(props.carsSort, "id")}
+            </button>
+          </th>
+          <th className="col-header">
+            <button type="button" onClick={() => props.onSortCars("make")}>
+              Make {sortArrow(props.carsSort, "make")}
+            </button>
+          </th>
+          <th className="col-header">
+            <button type="button" onClick={() => props.onSortCars("model")}>
+              Model {sortArrow(props.carsSort, "model")}
+            </button>
+          </th>
+          <th className="col-header">
+            <button type="button" onClick={() => props.onSortCars("year")}>
+              Year {sortArrow(props.carsSort, "year")}
+            </button>
+          </th>
+          <th className="col-header">
+            <button type="button" onClick={() => props.onSortCars("color")}>
+              Color {sortArrow(props.carsSort, "color")}
+            </button>
+          </th>
+          <th className="col-header">
+            <button type="button" onClick={() => props.onSortCars("price")}>
+              Price {sortArrow(props.carsSort, "price")}
+            </button>
+          </th>
           <th className="col-header">Actions</th>
         </tr>
       </thead>

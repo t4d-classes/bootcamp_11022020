@@ -1,12 +1,14 @@
 import { Action, AnyAction } from "redux";
 
 import { Car, NewCar } from "../models/cars";
+import { SortDir } from "../models/carStore";
 
 export const APPEND_CAR_ACTION = "APPEND_CAR";
 export const REPLACE_CAR_ACTION = "REPLACE_CAR";
 export const REMOVE_CAR_ACTION = "REMOVE_CAR";
 export const EDIT_CAR_ACTION = "EDIT_CAR";
 export const CANCEL_CAR_ACTION = "CANCEL_CAR";
+export const SORT_CARS_ACTION = "SORT_CARS";
 
 export interface AppendCarAction extends Action<typeof APPEND_CAR_ACTION> {
   payload: {
@@ -114,9 +116,33 @@ export const createCancelCarAction: CreateCancelCarAction = () => {
   };
 };
 
+export interface SortCarsAction extends Action<typeof SORT_CARS_ACTION> {
+  payload: {
+    sortCol: keyof Car;
+  };
+}
+
+export function isSortCarsAction(action: AnyAction): action is SortCarsAction {
+  return action.type === SORT_CARS_ACTION;
+}
+
+export type CreateSortCarsAction = (sortCol: keyof Car) => SortCarsAction;
+
+export const createSortCarsAction: CreateSortCarsAction = (
+  sortCol: keyof Car
+) => {
+  return {
+    type: SORT_CARS_ACTION,
+    payload: {
+      sortCol,
+    },
+  };
+};
+
 export type CarActions =
   | AppendCarAction
   | ReplaceCarAction
   | RemoveCarAction
   | EditCarAction
-  | CancelCarAction;
+  | CancelCarAction
+  | SortCarsAction;
