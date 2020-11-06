@@ -5,6 +5,10 @@ import { useSelector, useDispatch } from "react-redux";
 import {
   createAddAction,
   createSubtractAction,
+  createMultiplyAction,
+  createDivideAction,
+  createClearAction,
+  createDeleteEntryAction,
 } from "../actions/calcToolActions";
 import { CalcTool } from "../components/CalcTool";
 import { CalcToolState } from "../models/calcStore";
@@ -13,6 +17,8 @@ export function CalcToolContainer() {
   const stateProps = useSelector((state: CalcToolState) => {
     return {
       result: state.result,
+      history: state.history,
+      errorMessage: state.errorMessage,
     };
   });
 
@@ -22,6 +28,10 @@ export function CalcToolContainer() {
     {
       onAdd: createAddAction,
       onSubtract: createSubtractAction,
+      onMultiply: createMultiplyAction,
+      onDivide: createDivideAction,
+      onClear: createClearAction,
+      onDeleteEntry: createDeleteEntryAction,
     },
     useDispatch()
   );

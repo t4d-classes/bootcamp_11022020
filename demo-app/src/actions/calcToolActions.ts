@@ -2,6 +2,10 @@ import { Action, AnyAction } from "redux";
 
 export const ADD_ACTION = "ADD";
 export const SUBTRACT_ACTION = "SUBTRACT";
+export const MULTIPLY_ACTION = "MULTIPLY";
+export const DIVIDE_ACTION = "DIVIDE";
+export const CLEAR_ACTION = "CLEAR";
+export const DELETE_ENTRY_ACTION = "DELETE_ENTRY";
 
 export interface AddAction extends Action<typeof ADD_ACTION> {
   payload: {
@@ -45,4 +49,101 @@ export const createSubtractAction: CreateSubtractAction = (value) => {
   };
 };
 
-export type OpActions = AddAction | SubtractAction;
+export interface MultiplyAction extends Action<typeof MULTIPLY_ACTION> {
+  payload: {
+    value: number;
+  };
+}
+
+export function isMultiplyAction(action: AnyAction): action is MultiplyAction {
+  return action.type === MULTIPLY_ACTION;
+}
+
+export type CreateMultiplyAction = (value: number) => MultiplyAction;
+
+export const createMultiplyAction: CreateMultiplyAction = (value) => {
+  return {
+    type: MULTIPLY_ACTION,
+    payload: {
+      value,
+    },
+  };
+};
+
+export interface DivideAction extends Action<typeof DIVIDE_ACTION> {
+  payload: {
+    value: number;
+  };
+}
+
+export function isDivideAction(action: AnyAction): action is DivideAction {
+  return action.type === DIVIDE_ACTION;
+}
+
+export type CreateDivideAction = (value: number) => DivideAction;
+
+export const createDivideAction: CreateDivideAction = (value) => {
+  return {
+    type: DIVIDE_ACTION,
+    payload: {
+      value,
+    },
+  };
+};
+
+export type ClearAction = Action<typeof CLEAR_ACTION>;
+
+export function isClearAction(action: AnyAction): action is ClearAction {
+  return action.type === CLEAR_ACTION;
+}
+
+export type CreateClearAction = () => ClearAction;
+
+export const createClearAction: CreateClearAction = () => {
+  return {
+    type: CLEAR_ACTION,
+  };
+};
+
+export interface DeleteEntryAction extends Action<typeof DELETE_ENTRY_ACTION> {
+  payload: {
+    entryId: number;
+  };
+}
+
+export function isDeleteEntryAction(
+  action: AnyAction
+): action is DeleteEntryAction {
+  return action.type === DELETE_ENTRY_ACTION;
+}
+
+export type CreateDeleteEntryAction = (entryId: number) => DeleteEntryAction;
+
+export const createDeleteEntryAction: CreateDeleteEntryAction = (entryId) => {
+  return {
+    type: DELETE_ENTRY_ACTION,
+    payload: {
+      entryId,
+    },
+  };
+};
+
+export type OpActions =
+  | AddAction
+  | SubtractAction
+  | MultiplyAction
+  | DivideAction;
+
+export function isOpAction(action: AnyAction): action is OpActions {
+  return [ADD_ACTION, SUBTRACT_ACTION, MULTIPLY_ACTION, DIVIDE_ACTION].includes(
+    action.type
+  );
+}
+
+export type CalcActions =
+  | AddAction
+  | SubtractAction
+  | MultiplyAction
+  | DivideAction
+  | ClearAction
+  | DeleteEntryAction;
