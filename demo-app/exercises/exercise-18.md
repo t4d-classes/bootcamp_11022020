@@ -1,6 +1,6 @@
 # Exercise 18
 
-1. Implement sorting on car table. When you click the column header, sort the array of cars on that column. Do not implement sorting for the Actions column.
+1. Implement sorting on car table. When you click the column header, sort the array of cars on that column. Do not implement sorting for the Actions column. The initial sort is by id.
 
 2. When you click the column header the first time, sort ascending. When click it the second time, sort descending.
 
