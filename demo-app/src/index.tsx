@@ -2,14 +2,12 @@ import React from "react";
 import { render } from "react-dom";
 import { Provider } from "react-redux";
 
-import { CarTool } from "./components/CarTool";
-import { carToolStore } from "./stores/carToolStore";
+import { calcToolStore } from "./stores/calcToolStore";
+import { CalcToolContainer } from "./containers/CalcToolContainer";
 
 render(
-  <>
-    <Provider store={carToolStore}>
-      <CarTool />
-    </Provider>
-  </>,
+  <Provider store={calcToolStore}>
+    <CalcToolContainer />
+  </Provider>,
   document.querySelector("#root")
 );
