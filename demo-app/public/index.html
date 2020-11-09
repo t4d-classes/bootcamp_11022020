@@ -192,7 +192,7 @@
       myFetch("http://localhost:3060/cars").then((cars) => console.log(cars));
     </script> -->
 
-    <script>
+    <!-- <script>
       // Lab Exercise
 
       // Do the following things in order, output all results to the console.
@@ -251,35 +251,106 @@
       //   .then((res) => res.json())
       //   .then((car) => console.log(car));
 
-      fetch("http://localhost:3060/colors")
-        .then((res) => res.json())
-        .then((colors) => {
-          console.log(colors);
+      const doTheWork = () => {
+        return fetch("http://localhost:3060/colors")
+          .then((res) => res.json())
+          .then((colors) => {
+            console.log(colors);
 
-          fetch("http://localhost:3060/colors", {
-            method: "POST",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({ name: "hot pink", hexcode: "12ea34" }),
-          })
-            .then((res) => res.json())
-            .then((color) => {
-              fetch("http://localhost:3060/colors")
-                .then((res) => res.json())
-                .then((colors) => {
-                  console.log(colors);
-
-                  fetch("http://localhost:3060/colors/" + color.id, {
-                    method: "DELETE",
-                  }).then(() => {
-                    fetch("http://localhost:3060/colors")
-                      .then((res) => res.json())
-                      .then((colors) => {
-                        console.log(colors);
-                      });
-                  });
-                });
+            return fetch("http://localhost:3060/colors", {
+              method: "POST",
+              headers: { "Content-Type": "application/json" },
+              body: JSON.stringify({ name: "hot pink", hexcode: "12ea34" }),
             });
+          })
+          .then((res) => res.json())
+          .then((color) => {
+            return fetch("http://localhost:3060/colors")
+              .then((res) => res.json())
+              .then((colors) => {
+                console.log(colors);
+
+                return fetch("http://localhost:3060/colors/" + color.id, {
+                  method: "DELETE",
+                });
+              });
+          })
+          .then(() => {
+            return fetch("http://localhost:3060/colors");
+          })
+          .then((res) => res.json())
+          .then((colors) => {
+            console.log(colors);
+          });
+      };
+
+      doTheWork();
+
+      const refreshColors = async () => {
+        let res = await fetch("http://localhost:3060/colors");
+        let colors = await res.json();
+        console.log(colors);
+      };
+
+      const appendColor = async (newColor) => {
+        res = await fetch("http://localhost:3060/colors", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(newColor),
         });
+        const color = await res.json();
+        return color.id;
+      };
+
+      const removeColor = async (colorId) => {
+        await fetch("http://localhost:3060/colors/" + colorId, {
+          method: "DELETE",
+        });
+      };
+
+      const doTheWork2 = async () => {
+        await refreshColors();
+
+        const colorId = await appendColor({
+          name: "hot pink",
+          hexcode: "12ea34",
+        });
+
+        await refreshColors();
+        await removeColor(colorId);
+        await refreshColors();
+      };
+
+      doTheWork2();
+    </script> -->
+
+    <script>
+      const delay = () => (Math.random() * 10000) / 2;
+
+      const p1 = new Promise((resolve) =>
+        setTimeout(() => resolve("a"), delay())
+      );
+      const p2 = new Promise((resolve) =>
+        setTimeout(() => resolve("b"), delay())
+      );
+      const p3 = new Promise((resolve) =>
+        setTimeout(() => resolve("c"), delay())
+      );
+      const p4 = new Promise((resolve) =>
+        setTimeout(() => resolve("d"), delay())
+      );
+
+      p1.then((result) => console.log(result));
+      p2.then((result) => console.log(result));
+      p3.then((result) => console.log(result));
+      p4.then((result) => console.log(result));
+
+      Promise.all([p1, p2, p3, p4]).then((results) => {
+        console.log(results);
+        console.log("all done");
+      });
+
+      // Using what you have learned about async programming, promises and async/await, please delete all cars with an id greater than 4 from the REST API.
     </script>
   </body>
 </html>
