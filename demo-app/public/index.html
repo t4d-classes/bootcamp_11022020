@@ -64,7 +64,7 @@
       //console.dir(inner);
     </script> -->
 
-    <script>
+    <!-- <script>
       const delay = () => (Math.random() * 10000) / 2;
 
       // setTimeout(() => {
@@ -78,19 +78,36 @@
       // }, delay());
 
       function allDone() {
-        console.log('all done');
+        console.log("all done");
       }
 
+      let counter = 0;
+
+      counter++;
       setTimeout(() => {
         console.log("a");
+        counter--;
+        if (counter === 0) {
+          allDone();
+        }
       }, delay());
 
+      counter++;
       setTimeout(() => {
         console.log("b");
+        counter--;
+        if (counter === 0) {
+          allDone();
+        }
       }, delay());
 
+      counter++;
       setTimeout(() => {
         console.log("c");
+        counter--;
+        if (counter === 0) {
+          allDone();
+        }
       }, delay());
 
       // Update this code to run the allDone function after all three console logs have executed.
@@ -100,7 +117,76 @@
       // 2. You cannot add additional setTimeout calls
       // 4. Each console log a, b, c and must be done in a different task
       // 3. You cannot change how the delay is calculated
+    </script> -->
 
+    <!-- <script>
+      class Promise {
+        constructor(fn) {
+          this._resolveFns = [];
+
+          this._rejectFns = [];
+
+          const resolveFn = (data) => {
+            this._resolveFns.forEach((fn) => fn(data));
+          };
+
+          const rejectFn = () => {
+            this._rejectFns.forEach((fn) => fn(data));
+          };
+
+          fn(resolveFn, rejectFn);
+        }
+
+        then(fn) {
+          this._resolveFns.push(fn);
+        }
+
+        catch(fn) {
+          this._rejectFns.push(fn);
+        }
+      }
+
+      console.log("task 1: 1. calling new promise");
+
+      const p = new Promise((resolve, reject) => {
+        console.log("task 1: 2. calling settimeout");
+
+        setTimeout(() => {
+          console.log("task 2: 1. calling resolve");
+          resolve("a");
+        }, 2000);
+      });
+
+      p.then((result) => {
+        console.log("task 2: 2. output result");
+        console.log(result);
+      }).catch((result) => {
+        console.log("task 2: 2. handle reject");
+        console.log("rejected: ", result);
+      });
+
+      console.log("task 1: 3. made it here");
+    </script> -->
+
+    <script>
+      const xhr = new XMLHttpRequest();
+
+      xhr.addEventListener("readystatechange", () => {
+        if (xhr.status === 200 && xhr.readyState === 4) {
+          console.log(JSON.parse(xhr.responseText));
+        }
+      });
+
+      xhr.open("GET", "http://localhost:3060/cars");
+      xhr.send();
+
+
+      // create a new function named myFetch. The following line of code
+      // should work in your with no changes
+      // do not handle errors
+      // use the XHR code above to make the AJAX call
+
+      myFetch("http://localhost:3060/cars").then(cars => console.log(cars));
     </script>
   </body>
 </html>
