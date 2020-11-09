@@ -325,30 +325,42 @@
     </script> -->
 
     <script>
-      const delay = () => (Math.random() * 10000) / 2;
+      // const delay = () => (Math.random() * 10000) / 2;
 
-      const p1 = new Promise((resolve) =>
-        setTimeout(() => resolve("a"), delay())
-      );
-      const p2 = new Promise((resolve) =>
-        setTimeout(() => resolve("b"), delay())
-      );
-      const p3 = new Promise((resolve) =>
-        setTimeout(() => resolve("c"), delay())
-      );
-      const p4 = new Promise((resolve) =>
-        setTimeout(() => resolve("d"), delay())
-      );
+      // const p1 = new Promise((resolve) =>
+      //   setTimeout(() => resolve("a"), delay())
+      // );
+      // const p2 = new Promise((resolve) =>
+      //   setTimeout(() => resolve("b"), delay())
+      // );
+      // const p3 = new Promise((resolve) =>
+      //   setTimeout(() => resolve("c"), delay())
+      // );
+      // const p4 = new Promise((resolve) =>
+      //   setTimeout(() => resolve("d"), delay())
+      // );
 
-      p1.then((result) => console.log(result));
-      p2.then((result) => console.log(result));
-      p3.then((result) => console.log(result));
-      p4.then((result) => console.log(result));
+      // p1.then((result) => console.log(result));
+      // p2.then((result) => console.log(result));
+      // p3.then((result) => console.log(result));
+      // p4.then((result) => console.log(result));
 
-      Promise.all([p1, p2, p3, p4]).then((results) => {
-        console.log(results);
-        console.log("all done");
-      });
+      // Promise.all([p1, p2, p3, p4]).then((results) => {
+      //   console.log(results);
+      //   console.log("all done");
+      // });
+
+      fetch("http://localhost:3060/cars")
+        .then((res) => res.json())
+        .then((cars) => {
+          Promise.all(
+            cars
+              .filter((c) => c.id > 4)
+              .map((c) => fetch("http://localhost:3060/cars/" + c.id))
+          ).then(() => {
+            console.log("all deleted");
+          });
+        });
 
       // Using what you have learned about async programming, promises and async/await, please delete all cars with an id greater than 4 from the REST API.
     </script>
