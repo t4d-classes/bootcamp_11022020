@@ -168,25 +168,91 @@
       console.log("task 1: 3. made it here");
     </script> -->
 
-    <script>
-      const xhr = new XMLHttpRequest();
+    <!-- <script>
+      const myFetch = (url) => {
+        return new Promise((resolve) => {
+          const xhr = new XMLHttpRequest();
 
-      xhr.addEventListener("readystatechange", () => {
-        if (xhr.status === 200 && xhr.readyState === 4) {
-          console.log(JSON.parse(xhr.responseText));
-        }
-      });
+          xhr.addEventListener("readystatechange", () => {
+            if (xhr.status === 200 && xhr.readyState === 4) {
+              resolve(JSON.parse(xhr.responseText));
+            }
+          });
 
-      xhr.open("GET", "http://localhost:3060/cars");
-      xhr.send();
-
+          xhr.open("GET", url);
+          xhr.send();
+        });
+      };
 
       // create a new function named myFetch. The following line of code
       // should work in your with no changes
       // do not handle errors
       // use the XHR code above to make the AJAX call
 
-      myFetch("http://localhost:3060/cars").then(cars => console.log(cars));
+      myFetch("http://localhost:3060/cars").then((cars) => console.log(cars));
+    </script> -->
+
+
+    <script>
+
+      // Lab Exercise
+
+      // Do the following things in order, output all results to the console.
+
+      // 1. Display a list of all of the colors.
+      // 2. Add a color to the colors endpoint.
+      // 3. Display a list of all of the colors, should include the new color.
+      // 4. Delete the new color added.
+      // 5. Display a list of all of the colors, with the new color removed.
+
+
+      // gets all the cars
+      fetch("http://localhost:3060/cars")
+        .then((res) => res.json())
+        .then((cars) => console.log(cars));
+
+      // get one car
+      fetch("http://localhost:3060/cars/1")
+        .then((res) => res.json())
+        .then((car) => console.log(car));
+
+      // append a car
+      fetch("http://localhost:3060/cars", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          make: "Toyota",
+          model: "Corolla",
+          year: 2015,
+          color: "silver",
+          price: 35000,
+        }),
+      })
+        .then((res) => res.json())
+        .then((car) => console.log(car));
+
+      // replace a car
+      fetch("http://localhost:3060/cars/5", {
+        method: "PUT",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          id: 5,
+          make: "Toyota",
+          model: "Corolla",
+          year: 2015,
+          color: "charcoal",
+          price: 35000,
+        }),
+      })
+        .then((res) => res.json())
+        .then((car) => console.log(car));
+
+      // remove a car
+      fetch("http://localhost:3060/cars/11", {
+        method: "DELETE",
+      })
+        .then((res) => res.json())
+        .then((car) => console.log(car));
     </script>
   </body>
 </html>
