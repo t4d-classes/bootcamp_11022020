@@ -192,9 +192,7 @@
       myFetch("http://localhost:3060/cars").then((cars) => console.log(cars));
     </script> -->
 
-
     <script>
-
       // Lab Exercise
 
       // Do the following things in order, output all results to the console.
@@ -205,54 +203,83 @@
       // 4. Delete the new color added.
       // 5. Display a list of all of the colors, with the new color removed.
 
-
       // gets all the cars
-      fetch("http://localhost:3060/cars")
-        .then((res) => res.json())
-        .then((cars) => console.log(cars));
+      // fetch("http://localhost:3060/cars")
+      //   .then((res) => res.json())
+      //   .then((cars) => console.log(cars));
 
       // get one car
-      fetch("http://localhost:3060/cars/1")
-        .then((res) => res.json())
-        .then((car) => console.log(car));
+      // fetch("http://localhost:3060/cars/1")
+      //   .then((res) => res.json())
+      //   .then((car) => console.log(car));
 
       // append a car
-      fetch("http://localhost:3060/cars", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          make: "Toyota",
-          model: "Corolla",
-          year: 2015,
-          color: "silver",
-          price: 35000,
-        }),
-      })
-        .then((res) => res.json())
-        .then((car) => console.log(car));
+      // fetch("http://localhost:3060/cars", {
+      //   method: "POST",
+      //   headers: { "Content-Type": "application/json" },
+      //   body: JSON.stringify({
+      //     make: "Toyota",
+      //     model: "Corolla",
+      //     year: 2015,
+      //     color: "silver",
+      //     price: 35000,
+      //   }),
+      // })
+      //   .then((res) => res.json())
+      //   .then((car) => console.log(car));
 
       // replace a car
-      fetch("http://localhost:3060/cars/5", {
-        method: "PUT",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          id: 5,
-          make: "Toyota",
-          model: "Corolla",
-          year: 2015,
-          color: "charcoal",
-          price: 35000,
-        }),
-      })
-        .then((res) => res.json())
-        .then((car) => console.log(car));
+      // fetch("http://localhost:3060/cars/5", {
+      //   method: "PUT",
+      //   headers: { "Content-Type": "application/json" },
+      //   body: JSON.stringify({
+      //     id: 5,
+      //     make: "Toyota",
+      //     model: "Corolla",
+      //     year: 2015,
+      //     color: "charcoal",
+      //     price: 35000,
+      //   }),
+      // })
+      //   .then((res) => res.json())
+      //   .then((car) => console.log(car));
 
       // remove a car
-      fetch("http://localhost:3060/cars/11", {
-        method: "DELETE",
-      })
+      // fetch("http://localhost:3060/cars/11", {
+      //   method: "DELETE",
+      // })
+      //   .then((res) => res.json())
+      //   .then((car) => console.log(car));
+
+      fetch("http://localhost:3060/colors")
         .then((res) => res.json())
-        .then((car) => console.log(car));
+        .then((colors) => {
+          console.log(colors);
+
+          fetch("http://localhost:3060/colors", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ name: "hot pink", hexcode: "12ea34" }),
+          })
+            .then((res) => res.json())
+            .then((color) => {
+              fetch("http://localhost:3060/colors")
+                .then((res) => res.json())
+                .then((colors) => {
+                  console.log(colors);
+
+                  fetch("http://localhost:3060/colors/" + color.id, {
+                    method: "DELETE",
+                  }).then(() => {
+                    fetch("http://localhost:3060/colors")
+                      .then((res) => res.json())
+                      .then((colors) => {
+                        console.log(colors);
+                      });
+                  });
+                });
+            });
+        });
     </script>
   </body>
 </html>
