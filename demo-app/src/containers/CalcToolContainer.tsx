@@ -74,19 +74,40 @@ export function CalcToolContainer() {
 
   // onAdd = (value: number) => dispatch(createAddAction(value));
   // onSubtract = (value: number) => dispatch(createSubtractAction(value));
-  const boundActionProps = bindActionCreators(
-    {
-      onAdd: createAddAction,
-      onSubtract: createSubtractAction,
-      onMultiply: createMultiplyAction,
-      onDivide: createDivideAction,
-      onClear: createClearAction,
-      onAppendEntry: appendEntry,
-      onDeleteEntry: createDeleteEntryAction,
-      onRefreshHistory: refreshHistory,
-    },
-    useDispatch()
+
+  const dispatch = useDispatch();
+
+  const boundActionProps = useMemo(
+    () =>
+      bindActionCreators(
+        {
+          onAdd: createAddAction,
+          onSubtract: createSubtractAction,
+          onMultiply: createMultiplyAction,
+          onDivide: createDivideAction,
+          onClear: createClearAction,
+          onAppendEntry: appendEntry,
+          onDeleteEntry: createDeleteEntryAction,
+          onRefreshHistory: refreshHistory,
+        },
+        dispatch
+      ),
+    [dispatch]
   );
+
+  // const boundActionProps = bindActionCreators(
+  //   {
+  //     onAdd: createAddAction,
+  //     onSubtract: createSubtractAction,
+  //     onMultiply: createMultiplyAction,
+  //     onDivide: createDivideAction,
+  //     onClear: createClearAction,
+  //     onAppendEntry: appendEntry,
+  //     onDeleteEntry: createDeleteEntryAction,
+  //     onRefreshHistory: refreshHistory,
+  //   },
+  //   useDispatch()
+  // );
 
   return <CalcTool {...stateProps} {...boundActionProps} />;
 }

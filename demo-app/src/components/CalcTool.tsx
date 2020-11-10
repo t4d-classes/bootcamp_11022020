@@ -19,9 +19,11 @@ export type CalcToolProps = {
 export function CalcTool(props: CalcToolProps) {
   const [numInput, setNumInput] = useState(0);
 
+  const refreshHistory = props.onRefreshHistory;
+
   useEffect(() => {
-    props.onRefreshHistory();
-  }, []);
+    refreshHistory();
+  }, [refreshHistory]);
 
   const clear = () => {
     setNumInput(0);
