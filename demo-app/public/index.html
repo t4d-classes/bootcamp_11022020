@@ -324,7 +324,7 @@
       doTheWork2();
     </script> -->
 
-    <script>
+    <!-- <script>
       // const delay = () => (Math.random() * 10000) / 2;
 
       // const p1 = new Promise((resolve) =>
@@ -353,16 +353,21 @@
       fetch("http://localhost:3060/cars")
         .then((res) => res.json())
         .then((cars) => {
-          Promise.all(
+          return Promise.all(
             cars
-              .filter((c) => c.id > 4)
-              .map((c) => fetch("http://localhost:3060/cars/" + c.id))
-          ).then(() => {
-            console.log("all deleted");
-          });
+              .filter((c) => c.id > 2)
+              .map((c) =>
+                fetch("http://localhost:3060/cars/" + c.id, {
+                  method: "DELETE",
+                })
+              )
+          );
+        })
+        .then(() => {
+          console.log("all deleted");
         });
 
       // Using what you have learned about async programming, promises and async/await, please delete all cars with an id greater than 4 from the REST API.
-    </script>
+    </script> -->
   </body>
 </html>

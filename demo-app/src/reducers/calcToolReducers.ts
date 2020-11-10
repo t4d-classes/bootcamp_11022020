@@ -10,6 +10,7 @@ import {
   isDivideAction,
   isClearAction,
   OpActions,
+  isRefreshHistoryDoneAction,
 } from "../actions/calcToolActions";
 import {
   // CalcToolState,
@@ -79,16 +80,20 @@ export const historyReducer: Reducer<HistoryEntry[], CalcActions> = (
     return history.filter((entry) => entry.id !== action.payload.entryId);
   }
 
-  if (isOpAction(action)) {
-    return [
-      ...history,
-      {
-        id: Math.max(...history.map((entry) => entry.id), 0) + 1,
-        opName: action.type,
-        opValue: action.payload.value,
-      },
-    ];
+  if (isRefreshHistoryDoneAction(action)) {
+    return action.payload.history;
   }
+
+  // if (isOpAction(action)) {
+  //   return [
+  //     ...history,
+  //     {
+  //       id: Math.max(...history.map((entry) => entry.id), 0) + 1,
+  //       opName: action.type,
+  //       opValue: action.payload.value,
+  //     },
+  //   ];
+  // }
 
   return history;
 };

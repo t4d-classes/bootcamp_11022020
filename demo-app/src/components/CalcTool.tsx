@@ -1,4 +1,5 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
+import { refreshHistory } from "../actions/calcToolActions";
 import { HistoryEntry } from "../models/calcStore";
 
 export type CalcToolProps = {
@@ -11,10 +12,16 @@ export type CalcToolProps = {
   onDivide: (value: number) => void;
   onClear: () => void;
   onDeleteEntry: (entryId: number) => void;
+  onAppendEntry: (opName: string, opValue: number) => void;
+  onRefreshHistory: () => void;
 };
 
 export function CalcTool(props: CalcToolProps) {
   const [numInput, setNumInput] = useState(0);
+
+  useEffect(() => {
+    props.onRefreshHistory();
+  }, []);
 
   const clear = () => {
     setNumInput(0);
@@ -35,16 +42,28 @@ export function CalcTool(props: CalcToolProps) {
           />
         </div>
         <fieldset>
-          <button type="button" onClick={() => props.onAdd(numInput)}>
+          <button
+            type="button"
+            onClick={() => props.onAppendEntry("ADD", numInput)}
+          >
             Add
           </button>
-          <button type="button" onClick={() => props.onSubtract(numInput)}>
+          <button
+            type="button"
+            onClick={() => props.onAppendEntry("SUBTRACT", numInput)}
+          >
             Subtract
           </button>
-          <button type="button" onClick={() => props.onMultiply(numInput)}>
+          <button
+            type="button"
+            onClick={() => props.onAppendEntry("MULTIPLY", numInput)}
+          >
             Multiply
           </button>
-          <button type="button" onClick={() => props.onDivide(numInput)}>
+          <button
+            type="button"
+            onClick={() => props.onAppendEntry("DIVIDE", numInput)}
+          >
             Divide
           </button>
           <button type="button" onClick={clear}>

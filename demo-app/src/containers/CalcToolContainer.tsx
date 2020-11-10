@@ -9,6 +9,8 @@ import {
   createDivideAction,
   createClearAction,
   createDeleteEntryAction,
+  appendEntry,
+  refreshHistory,
   ADD_ACTION,
   SUBTRACT_ACTION,
   MULTIPLY_ACTION,
@@ -79,7 +81,9 @@ export function CalcToolContainer() {
       onMultiply: createMultiplyAction,
       onDivide: createDivideAction,
       onClear: createClearAction,
+      onAppendEntry: appendEntry,
       onDeleteEntry: createDeleteEntryAction,
+      onRefreshHistory: refreshHistory,
     },
     useDispatch()
   );
