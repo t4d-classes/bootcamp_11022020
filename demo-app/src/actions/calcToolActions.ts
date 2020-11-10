@@ -109,7 +109,8 @@ export const appendEntry = (opName: string, opValue: number) => {
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ opName, opValue }),
     }).then(() => {
-      refreshHistory()(dispatch);
+      const fn = refreshHistory()
+      fn(dispatch);
     });
   };
 };
