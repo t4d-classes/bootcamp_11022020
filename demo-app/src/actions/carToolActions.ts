@@ -1,81 +1,189 @@
-import { Action, AnyAction } from "redux";
+import { Action, AnyAction, Dispatch } from "redux";
 
 import { Car, NewCar } from "../models/cars";
-import { SortDir } from "../models/carStore";
 
-export const APPEND_CAR_ACTION = "APPEND_CAR";
-export const REPLACE_CAR_ACTION = "REPLACE_CAR";
-export const REMOVE_CAR_ACTION = "REMOVE_CAR";
+export const REFRESH_CARS_REQUEST_ACTION = "REFRESH_CARS_REQUEST";
+export const REFRESH_CARS_DONE_ACTION = "REFRESH_CARS_DONE";
+export const APPEND_CAR_REQUEST_ACTION = "APPEND_CAR";
+export const REPLACE_CAR_REQUEST_ACTION = "REPLACE_CAR";
+export const REMOVE_CAR_REQUEST_ACTION = "REMOVE_CAR";
 export const EDIT_CAR_ACTION = "EDIT_CAR";
 export const CANCEL_CAR_ACTION = "CANCEL_CAR";
 export const SORT_CARS_ACTION = "SORT_CARS";
 
-export interface AppendCarAction extends Action<typeof APPEND_CAR_ACTION> {
+export type RefreshCarsRequestAction = Action<
+  typeof REFRESH_CARS_REQUEST_ACTION
+>;
+
+export function isRefreshCarsRequestAction(
+  action: AnyAction
+): action is RefreshCarsRequestAction {
+  return action.type === REFRESH_CARS_REQUEST_ACTION;
+}
+
+export type CreateRefreshCarsRequestAction = () => RefreshCarsRequestAction;
+
+export const createRefreshCarsRequestAction: CreateRefreshCarsRequestAction = () => {
+  return {
+    type: REFRESH_CARS_REQUEST_ACTION,
+  };
+};
+
+export interface RefreshCarsDoneAction
+  extends Action<typeof REFRESH_CARS_DONE_ACTION> {
+  payload: {
+    cars: Car[];
+  };
+}
+
+export function isRefreshCarsDoneAction(
+  action: AnyAction
+): action is RefreshCarsDoneAction {
+  return action.type === REFRESH_CARS_DONE_ACTION;
+}
+
+export type CreateRefreshCarsDoneAction = (
+  cars: Car[]
+) => RefreshCarsDoneAction;
+
+export const createRefreshCarsDoneAction: CreateRefreshCarsDoneAction = (
+  cars
+) => {
+  return {
+    type: REFRESH_CARS_DONE_ACTION,
+    payload: {
+      cars,
+    },
+  };
+};
+
+export const refreshCars = () => {
+  return (dispatch: Dispatch) => {
+    dispatch(createRefreshCarsRequestAction());
+    return fetch("http://localhost:3060/cars")
+      .then((res) => res.json())
+      .then((cars) => dispatch(createRefreshCarsDoneAction(cars)));
+  };
+};
+
+export interface AppendCarRequestAction
+  extends Action<typeof APPEND_CAR_REQUEST_ACTION> {
   payload: {
     car: NewCar;
   };
 }
 
-export function isAppendCarAction(
+export function isAppendCarRequestAction(
   action: AnyAction
-): action is AppendCarAction {
-  return action.type === APPEND_CAR_ACTION;
+): action is AppendCarRequestAction {
+  return action.type === APPEND_CAR_REQUEST_ACTION;
 }
 
-export type CreateAppendCarAction = (car: NewCar) => AppendCarAction;
+export type CreateAppendCarRequestAction = (
+  car: NewCar
+) => AppendCarRequestAction;
 
-export const createAppendCarAction: CreateAppendCarAction = (car: NewCar) => {
+export const createAppendCarRequestAction: CreateAppendCarRequestAction = (
+  car: NewCar
+) => {
   return {
-    type: APPEND_CAR_ACTION,
+    type: APPEND_CAR_REQUEST_ACTION,
     payload: {
       car,
     },
   };
 };
 
-export interface ReplaceCarAction extends Action<typeof REPLACE_CAR_ACTION> {
+export const appendCar = (car: NewCar) => {
+  return (dispatch: Dispatch) => {
+    dispatch(createAppendCarRequestAction(car));
+    return fetch("http://localhost:3060/cars", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(car),
+    }).then(() => {
+      refreshCars()(dispatch);
+    });
+  };
+};
+
+export interface ReplaceCarRequestAction
+  extends Action<typeof REPLACE_CAR_REQUEST_ACTION> {
   payload: {
     car: Car;
   };
 }
 
-export function isReplaceCarAction(
+export function isReplaceCarRequestAction(
   action: AnyAction
-): action is ReplaceCarAction {
-  return action.type === REPLACE_CAR_ACTION;
+): action is ReplaceCarRequestAction {
+  return action.type === REPLACE_CAR_REQUEST_ACTION;
 }
 
-export type CreateReplaceCarAction = (car: Car) => ReplaceCarAction;
+export type CreateReplaceCarRequestAction = (
+  car: Car
+) => ReplaceCarRequestAction;
 
-export const createReplaceCarAction: CreateReplaceCarAction = (car: Car) => {
+export const createReplaceCarRequestAction: CreateReplaceCarRequestAction = (
+  car
+) => {
   return {
-    type: REPLACE_CAR_ACTION,
+    type: REPLACE_CAR_REQUEST_ACTION,
     payload: {
       car,
     },
   };
 };
 
-export interface RemoveCarAction extends Action<typeof REMOVE_CAR_ACTION> {
+export const replaceCar = (car: Car) => {
+  return (dispatch: Dispatch) => {
+    dispatch(createReplaceCarRequestAction(car));
+    return fetch("http://localhost:3060/cars/" + encodeURIComponent(car.id), {
+      method: "PUT",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(car),
+    }).then(() => {
+      refreshCars()(dispatch);
+    });
+  };
+};
+
+export interface RemoveCarRequestAction
+  extends Action<typeof REMOVE_CAR_REQUEST_ACTION> {
   payload: {
     carId: number;
   };
 }
 
-export function isRemoveCarAction(
+export function isRemoveCarRequestAction(
   action: AnyAction
-): action is RemoveCarAction {
-  return action.type === REMOVE_CAR_ACTION;
+): action is RemoveCarRequestAction {
+  return action.type === REMOVE_CAR_REQUEST_ACTION;
 }
 
-export type CreateRemoveCarAction = (carId: number) => RemoveCarAction;
+export type CreateRemoveCarRequestAction = (
+  carId: number
+) => RemoveCarRequestAction;
 
-export const createRemoveCarAction: CreateRemoveCarAction = (carId: number) => {
+export const createRemoveCarRequestAction: CreateRemoveCarRequestAction = (
+  carId
+) => {
   return {
-    type: REMOVE_CAR_ACTION,
+    type: REMOVE_CAR_REQUEST_ACTION,
     payload: {
       carId,
     },
+  };
+};
+
+export const removeCar = (carId: number) => {
+  return (dispatch: Dispatch) => {
+    dispatch(createRemoveCarRequestAction(carId));
+    return fetch("http://localhost:3060/cars/" + encodeURIComponent(carId), {
+      method: "DELETE",
+    }).then(() => {
+      refreshCars()(dispatch);
+    });
   };
 };
 
@@ -140,9 +248,11 @@ export const createSortCarsAction: CreateSortCarsAction = (
 };
 
 export type CarActions =
-  | AppendCarAction
-  | ReplaceCarAction
-  | RemoveCarAction
+  | RefreshCarsRequestAction
+  | RefreshCarsDoneAction
+  | AppendCarRequestAction
+  | ReplaceCarRequestAction
+  | RemoveCarRequestAction
   | EditCarAction
   | CancelCarAction
   | SortCarsAction;

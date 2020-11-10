@@ -1,48 +1,64 @@
-import React from "react";
+import React, { useEffect, useMemo } from "react";
 import { bindActionCreators } from "redux";
 import { useSelector, useDispatch } from "react-redux";
 
 import {
-  createReplaceCarAction,
-  createRemoveCarAction,
+  replaceCar,
+  removeCar,
   createEditCarAction,
   createCancelCarAction,
   createSortCarsAction,
+  refreshCars,
 } from "../actions/carToolActions";
 import { CarTable } from "../components/CarTable";
 import { CarToolState } from "../models/carStore";
 
 export function CarTableContainer() {
   const stateProps = useSelector((state: CarToolState) => {
-    const { sortCol, sortDir } = state.carsSort;
-
-    const sortedCars = [...state.cars].sort((a, b) => {
-      if (a[sortCol] < b[sortCol]) {
-        return sortDir === "asc" ? -1 : 1;
-      } else if (a[sortCol] > b[sortCol]) {
-        return sortDir === "asc" ? 1 : -1;
-      } else {
-        return 0;
-      }
-    });
-
     return {
-      cars: sortedCars,
+      unsortedCars: state.cars,
       editCarId: state.editCarId,
       carsSort: state.carsSort,
     };
   });
 
-  const boundActionProps = bindActionCreators(
-    {
-      onSaveCar: createReplaceCarAction,
-      onDeleteCar: createRemoveCarAction,
-      onEditCar: createEditCarAction,
-      onCancelCar: createCancelCarAction,
-      onSortCars: createSortCarsAction,
-    },
-    useDispatch()
+  const { sortCol, sortDir } = stateProps.carsSort;
+  const { unsortedCars } = stateProps;
+
+  const sortedCars = useMemo(
+    () =>
+      [...unsortedCars].sort((a, b) => {
+        if (a[sortCol] < b[sortCol]) {
+          return sortDir === "asc" ? -1 : 1;
+        } else if (a[sortCol] > b[sortCol]) {
+          return sortDir === "asc" ? 1 : -1;
+        } else {
+          return 0;
+        }
+      }),
+    [unsortedCars, sortCol, sortDir]
   );
 
-  return <CarTable {...stateProps} {...boundActionProps} />;
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    refreshCars()(dispatch);
+  }, [dispatch]);
+
+  const boundActionProps = useMemo(
+    () =>
+      bindActionCreators(
+        {
+          onSaveCar: replaceCar,
+          onDeleteCar: removeCar,
+          onEditCar: createEditCarAction,
+          onCancelCar: createCancelCarAction,
+          onSortCars: createSortCarsAction,
+        },
+        dispatch
+      ),
+    [dispatch]
+  );
+
+  return <CarTable {...stateProps} cars={sortedCars} {...boundActionProps} />;
 }
