@@ -1,26 +1,5 @@
 {
-  "history": [
-    {
-      "opName": "ADD",
-      "opValue": 3,
-      "id": 1
-    },
-    {
-      "opName": "SUBTRACT",
-      "opValue": 6,
-      "id": 2
-    },
-    {
-      "opName": "MULTIPLY",
-      "opValue": 7,
-      "id": 3
-    },
-    {
-      "opName": "DIVIDE",
-      "opValue": 2,
-      "id": 4
-    }
-  ],
+  "history": [],
   "colors": [
     {
       "id": 1,

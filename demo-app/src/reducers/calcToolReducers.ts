@@ -8,7 +8,6 @@ import {
   isOpAction,
   isDeleteEntryAction,
   isDivideAction,
-  isClearAction,
   OpActions,
   isRefreshHistoryDoneAction,
 } from "../actions/calcToolActions";
@@ -54,7 +53,7 @@ export const errorMessageReducer: Reducer<string, OpActions> = (
   }
 
   if (
-    isClearAction(action) ||
+    isRefreshHistoryDoneAction(action) ||
     isDeleteEntryAction(action) ||
     isOpAction(action)
   ) {
@@ -68,10 +67,6 @@ export const historyReducer: Reducer<HistoryEntry[], CalcActions> = (
   history = [],
   action
 ) => {
-  if (isClearAction(action)) {
-    return [];
-  }
-
   if (isDivideAction(action) && action.payload.value === 0) {
     return history;
   }

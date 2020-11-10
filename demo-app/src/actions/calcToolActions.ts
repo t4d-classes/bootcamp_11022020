@@ -13,6 +13,7 @@ export const APPEND_ENTRY_REQUEST_ACTION = "APPEND_ENTRY_REQUEST_ACTION";
 export const APPEND_ENTRY_DONE_ACTION = "APPEND_ENTRY_DONE_ACTION";
 export const REFRESH_HISTORY_REQUEST_ACTION = "REFRESH_HISTORY_REQUEST_ACTION";
 export const REFRESH_HISTORY_DONE_ACTION = "REFRESH_HISTORY_DONE_ACTION";
+export const CLEAR_HISTORY_REQUEST_ACTION = "CLEAR_HISTORY_REQUEST_ACTION";
 
 export type RefreshHistoryRequestAction = Action<
   typeof REFRESH_HISTORY_REQUEST_ACTION
@@ -109,9 +110,45 @@ export const appendEntry = (opName: string, opValue: number) => {
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ opName, opValue }),
     }).then(() => {
-      const fn = refreshHistory()
+      const fn = refreshHistory();
       fn(dispatch);
     });
+  };
+};
+
+export type ClearHistoryRequestAction = Action<
+  typeof CLEAR_HISTORY_REQUEST_ACTION
+>;
+
+export function isClearHistoryRequestAction(
+  action: AnyAction
+): action is ClearHistoryRequestAction {
+  return action.type === CLEAR_HISTORY_REQUEST_ACTION;
+}
+
+export type CreateClearHistoryRequestAction = () => ClearHistoryRequestAction;
+
+export const createClearHistoryRequestAction: CreateClearHistoryRequestAction = () => {
+  return {
+    type: CLEAR_HISTORY_REQUEST_ACTION,
+  };
+};
+
+export const clearHistory = () => {
+  return (dispatch: Dispatch) => {
+    dispatch(createClearHistoryRequestAction());
+    return fetch("http://localhost:3060/history")
+      .then((res) => res.json())
+      .then((history) => {
+        return Promise.all(
+          history.map((h: HistoryEntry) => {
+            return fetch("http://localhost:3060/history/" + h.id, {
+              method: "DELETE",
+            });
+          })
+        );
+      })
+      .then(() => dispatch(createRefreshHistoryDoneAction([])));
   };
 };
 
