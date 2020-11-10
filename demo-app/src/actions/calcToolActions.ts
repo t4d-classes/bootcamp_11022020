@@ -1,19 +1,42 @@
 import { Action, AnyAction, Dispatch } from "redux";
 
-import { HistoryEntry } from "../models/calcStore";
+import { HistoryEntry, DIVIDE } from "../models/calcStore";
 
-export const ADD_ACTION = "ADD";
-export const SUBTRACT_ACTION = "SUBTRACT";
-export const MULTIPLY_ACTION = "MULTIPLY";
-export const DIVIDE_ACTION = "DIVIDE";
-export const CLEAR_ACTION = "CLEAR";
-export const DELETE_ENTRY_ACTION = "DELETE_ENTRY";
-
-export const APPEND_ENTRY_REQUEST_ACTION = "APPEND_ENTRY_REQUEST_ACTION";
-export const APPEND_ENTRY_DONE_ACTION = "APPEND_ENTRY_DONE_ACTION";
 export const REFRESH_HISTORY_REQUEST_ACTION = "REFRESH_HISTORY_REQUEST_ACTION";
 export const REFRESH_HISTORY_DONE_ACTION = "REFRESH_HISTORY_DONE_ACTION";
+export const APPEND_ENTRY_REQUEST_ACTION = "APPEND_ENTRY_REQUEST_ACTION";
+export const APPEND_ENTRY_DONE_ACTION = "APPEND_ENTRY_DONE_ACTION";
+export const DELETE_ENTRY_REQUEST_ACTION = "DELETE_ENTRY_REQUEST";
 export const CLEAR_HISTORY_REQUEST_ACTION = "CLEAR_HISTORY_REQUEST_ACTION";
+export const SET_ERROR_MESSAGE_ACTION = "SET_ERROR_MESSAGE_ACTION";
+
+export interface SetErrorMessageAction
+  extends Action<typeof SET_ERROR_MESSAGE_ACTION> {
+  payload: {
+    errorMessage: string;
+  };
+}
+
+export function isSetErrorMessageAction(
+  action: AnyAction
+): action is SetErrorMessageAction {
+  return action.type === SET_ERROR_MESSAGE_ACTION;
+}
+
+export type CreateSetErrorMessageAction = (
+  errorMessage: string
+) => SetErrorMessageAction;
+
+export const createSetErrorMessageAction: CreateSetErrorMessageAction = (
+  errorMessage
+) => {
+  return {
+    type: SET_ERROR_MESSAGE_ACTION,
+    payload: {
+      errorMessage,
+    },
+  };
+};
 
 export type RefreshHistoryRequestAction = Action<
   typeof REFRESH_HISTORY_REQUEST_ACTION
@@ -104,6 +127,11 @@ export const createAppendEntryRequestAction: CreateAppendEntryRequestAction = (
 
 export const appendEntry = (opName: string, opValue: number) => {
   return (dispatch: Dispatch) => {
+    if (opName === DIVIDE && opValue === 0) {
+      dispatch(createSetErrorMessageAction("Divide by zero"));
+      return;
+    }
+
     dispatch(createAppendEntryRequestAction(opName, opValue));
     return fetch("http://localhost:3060/history", {
       method: "POST",
@@ -152,144 +180,43 @@ export const clearHistory = () => {
   };
 };
 
-export interface AddAction extends Action<typeof ADD_ACTION> {
-  payload: {
-    value: number;
-  };
-}
-
-export function isAddAction(action: AnyAction): action is AddAction {
-  return action.type === ADD_ACTION;
-}
-
-export type CreateAddAction = (value: number) => AddAction;
-
-export const createAddAction: CreateAddAction = (value) => {
-  return {
-    type: ADD_ACTION,
-    payload: {
-      value,
-    },
-  };
-};
-
-export interface SubtractAction extends Action<typeof SUBTRACT_ACTION> {
-  payload: {
-    value: number;
-  };
-}
-
-export function isSubtractAction(action: AnyAction): action is SubtractAction {
-  return action.type === SUBTRACT_ACTION;
-}
-
-export type CreateSubtractAction = (value: number) => SubtractAction;
-
-export const createSubtractAction: CreateSubtractAction = (value) => {
-  return {
-    type: SUBTRACT_ACTION,
-    payload: {
-      value,
-    },
-  };
-};
-
-export interface MultiplyAction extends Action<typeof MULTIPLY_ACTION> {
-  payload: {
-    value: number;
-  };
-}
-
-export function isMultiplyAction(action: AnyAction): action is MultiplyAction {
-  return action.type === MULTIPLY_ACTION;
-}
-
-export type CreateMultiplyAction = (value: number) => MultiplyAction;
-
-export const createMultiplyAction: CreateMultiplyAction = (value) => {
-  return {
-    type: MULTIPLY_ACTION,
-    payload: {
-      value,
-    },
-  };
-};
-
-export interface DivideAction extends Action<typeof DIVIDE_ACTION> {
-  payload: {
-    value: number;
-  };
-}
-
-export function isDivideAction(action: AnyAction): action is DivideAction {
-  return action.type === DIVIDE_ACTION;
-}
-
-export type CreateDivideAction = (value: number) => DivideAction;
-
-export const createDivideAction: CreateDivideAction = (value) => {
-  return {
-    type: DIVIDE_ACTION,
-    payload: {
-      value,
-    },
-  };
-};
-
-export type ClearAction = Action<typeof CLEAR_ACTION>;
-
-export function isClearAction(action: AnyAction): action is ClearAction {
-  return action.type === CLEAR_ACTION;
-}
-
-export type CreateClearAction = () => ClearAction;
-
-export const createClearAction: CreateClearAction = () => {
-  return {
-    type: CLEAR_ACTION,
-  };
-};
-
-export interface DeleteEntryAction extends Action<typeof DELETE_ENTRY_ACTION> {
+export interface DeleteEntryRequestAction
+  extends Action<typeof DELETE_ENTRY_REQUEST_ACTION> {
   payload: {
     entryId: number;
   };
 }
 
-export function isDeleteEntryAction(
+export function isDeleteEntryRequestAction(
   action: AnyAction
-): action is DeleteEntryAction {
-  return action.type === DELETE_ENTRY_ACTION;
+): action is DeleteEntryRequestAction {
+  return action.type === DELETE_ENTRY_REQUEST_ACTION;
 }
 
-export type CreateDeleteEntryAction = (entryId: number) => DeleteEntryAction;
+export type CreateDeleteEntryRequestAction = (
+  entryId: number
+) => DeleteEntryRequestAction;
 
-export const createDeleteEntryAction: CreateDeleteEntryAction = (entryId) => {
+export const createDeleteEntryRequestAction: CreateDeleteEntryRequestAction = (
+  entryId
+) => {
   return {
-    type: DELETE_ENTRY_ACTION,
+    type: DELETE_ENTRY_REQUEST_ACTION,
     payload: {
       entryId,
     },
   };
 };
 
-export type OpActions =
-  | AddAction
-  | SubtractAction
-  | MultiplyAction
-  | DivideAction;
+export const deleteEntry = (entryId: number) => {
+  return (dispatch: Dispatch) => {
+    dispatch(createDeleteEntryRequestAction(entryId));
+    return fetch("http://localhost:3060/history/" + entryId, {
+      method: "DELETE",
+    }).then(() => {
+      return refreshHistory()(dispatch);
+    });
+  };
+};
 
-export function isOpAction(action: AnyAction): action is OpActions {
-  return [ADD_ACTION, SUBTRACT_ACTION, MULTIPLY_ACTION, DIVIDE_ACTION].includes(
-    action.type
-  );
-}
-
-export type CalcActions =
-  | AddAction
-  | SubtractAction
-  | MultiplyAction
-  | DivideAction
-  | ClearAction
-  | DeleteEntryAction
-  | RefreshHistoryDoneAction;
+export type CalcActions = RefreshHistoryDoneAction | SetErrorMessageAction;

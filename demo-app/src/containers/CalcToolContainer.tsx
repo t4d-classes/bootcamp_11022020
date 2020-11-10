@@ -3,62 +3,38 @@ import { bindActionCreators } from "redux";
 import { useSelector, useDispatch } from "react-redux";
 
 import {
-  createAddAction,
-  createSubtractAction,
-  createMultiplyAction,
-  createDivideAction,
-  createDeleteEntryAction,
   appendEntry,
   refreshHistory,
   clearHistory,
-  ADD_ACTION,
-  SUBTRACT_ACTION,
-  MULTIPLY_ACTION,
-  DIVIDE_ACTION,
+  deleteEntry,
 } from "../actions/calcToolActions";
 import { CalcTool } from "../components/CalcTool";
-import { CalcToolState, HistoryEntry } from "../models/calcStore";
+import {
+  CalcToolState,
+  HistoryEntry,
+  ADD,
+  SUBTRACT,
+  MULTIPLY,
+  DIVIDE,
+} from "../models/calcStore";
 
 const computeResult = (history: HistoryEntry[]) => {
   console.log("I am computing...");
   return history.reduce((result, entry) => {
     switch (entry.opName) {
-      case ADD_ACTION:
+      case ADD:
         return result + entry.opValue;
-      case SUBTRACT_ACTION:
+      case SUBTRACT:
         return result - entry.opValue;
-      case MULTIPLY_ACTION:
+      case MULTIPLY:
         return result * entry.opValue;
-      case DIVIDE_ACTION:
+      case DIVIDE:
         return result / entry.opValue;
       default:
         return result;
     }
-  }, 0 /* initial value of result */);
+  }, 0);
 };
-
-// const computeResult = (history: HistoryEntry[]) => {
-//   let result = 0;
-
-//   history.forEach((entry) => {
-//     switch (entry.opName) {
-//       case ADD_ACTION:
-//         result = result + entry.opValue;
-//         break;
-//       case SUBTRACT_ACTION:
-//         result = result - entry.opValue;
-//         break;
-//       case MULTIPLY_ACTION:
-//         result = result * entry.opValue;
-//         break;
-//       case DIVIDE_ACTION:
-//         result = result / entry.opValue;
-//         break;
-//     }
-//   });
-
-//   return result;
-// };
 
 export function CalcToolContainer() {
   const stateProps = useSelector((state: CalcToolState) => {
@@ -72,42 +48,21 @@ export function CalcToolContainer() {
     stateProps.history,
   ]);
 
-  // onAdd = (value: number) => dispatch(createAddAction(value));
-  // onSubtract = (value: number) => dispatch(createSubtractAction(value));
-
   const dispatch = useDispatch();
 
   const boundActionProps = useMemo(
     () =>
       bindActionCreators(
         {
-          onAdd: createAddAction,
-          onSubtract: createSubtractAction,
-          onMultiply: createMultiplyAction,
-          onDivide: createDivideAction,
           onClear: clearHistory,
           onAppendEntry: appendEntry,
-          onDeleteEntry: createDeleteEntryAction,
+          onDeleteEntry: deleteEntry,
           onRefreshHistory: refreshHistory,
         },
         dispatch
       ),
     [dispatch]
   );
-
-  // const boundActionProps = bindActionCreators(
-  //   {
-  //     onAdd: createAddAction,
-  //     onSubtract: createSubtractAction,
-  //     onMultiply: createMultiplyAction,
-  //     onDivide: createDivideAction,
-  //     onClear: createClearAction,
-  //     onAppendEntry: appendEntry,
-  //     onDeleteEntry: createDeleteEntryAction,
-  //     onRefreshHistory: refreshHistory,
-  //   },
-  //   useDispatch()
-  // );
 
   return <CalcTool {...stateProps} {...boundActionProps} />;
 }
