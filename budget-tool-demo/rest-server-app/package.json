@@ -1,0 +1,14 @@
+{
+  "name": "rest-server-app",
+  "version": "1.0.0",
+  "description": "",
+  "scripts": {
+    "start": "json-server --port 3050 --host 0.0.0.0 ./data/db.json"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "json-server": "^0.16.2"
+  }
+}

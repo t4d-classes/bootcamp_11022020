@@ -1,0 +1,39 @@
+version: "3.8"
+services:
+  graphql-server-app:
+    build: ./graphql-server-app
+    image: t4d/graphql-server-app
+    ports:
+      - "4000:4000"
+    environment:
+      - NODE_ENV=development
+    volumes:
+      - graphqlserverlog:/var/log
+    links:
+      - rest-server-app
+      - cache-server-app
+    depends_on:
+      - rest-server-app
+      - cache-server-app
+  rest-server-app:
+    build: ./rest-server-app
+    image: t4d/rest-server-app
+    ports:
+      - "3050:3050"
+    environment:
+      - NODE_ENV=development
+    volumes:
+      - restserverdata:/usr/src/app/data
+      - restserverlog:/var/log
+  cache-server-app:
+    build: ./cache-server-app
+    image: t4d/cache-server-app
+    ports:
+      - "6379:6379"
+    volumes:
+      - cacheserverlog:/var/log
+volumes:
+  graphqlserverlog: {}
+  restserverdata: {}
+  restserverlog: {}
+  cacheserverlog: {}

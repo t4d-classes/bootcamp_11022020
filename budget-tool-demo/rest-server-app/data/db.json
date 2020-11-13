@@ -1,0 +1,12 @@
+{
+  "vendors": [
+    { "id": 1, "name": "Bank" },
+    { "id": 2, "name": "Grocery" },
+    { "id": 3, "name": "Electric" },
+    { "id": 4, "name": "Water & Sewer" },
+    { "id": 5, "name": "Trash" },
+    { "id": 6, "name": "Cellular" },
+    { "id": 7, "name": "Insurance" },
+    { "id": 8, "name": "Cable" }
+  ]
+}

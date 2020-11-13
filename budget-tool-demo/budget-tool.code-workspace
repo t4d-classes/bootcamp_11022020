@@ -1,0 +1,17 @@
+{
+  "folders": [
+    {
+      "path": "client-app"
+    },
+    {
+      "path": "graphql-server-app"
+    },
+    {
+      "path": "rest-server-app"
+    },
+    {
+      "path": "cache-server-app"
+    }
+  ],
+  "settings": {}
+}
