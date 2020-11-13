@@ -9,3 +9,7 @@ export type NewCar = {
 };
 
 export type Car = NewCar & Item;
+
+export type CarKeys = keyof Car;
+
+export type NewCarKeys = keyof NewCar;

@@ -1,34 +1,30 @@
-import React from 'react';
-import { render, RenderResult, fireEvent } from '@testing-library/react';
-import renderer from 'react-test-renderer';
+import React from "react";
+import { render, RenderResult, fireEvent } from "@testing-library/react";
+import renderer from "react-test-renderer";
 
-import { Car, CarKeys } from '../models/car';
-import { CarViewRow } from '../components/CarViewRow';
+import { Car, CarKeys } from "../models/cars";
+import { CarViewRow } from "../components/CarViewRow";
 
-test('snapshot CarViewRow component', () => {
+test("snapshot CarViewRow component", () => {
   const car: Car = {
     id: 1,
-    make: 'Ford',
-    model: 'Fusion Hybrid',
+    make: "Ford",
+    model: "Fusion Hybrid",
     year: 2020,
-    color: 'red',
+    color: "red",
     price: 45000,
   };
 
   expect(
     renderer
       .create(
-        <CarViewRow
-          car={car}
-          onEditCar={() => null}
-          onDeleteCar={() => null}
-        />,
+        <CarViewRow car={car} onEditCar={() => null} onDeleteCar={() => null} />
       )
-      .toJSON(),
+      .toJSON()
   ).toMatchSnapshot();
 });
 
-describe('CarViewRow testing library', () => {
+describe("CarViewRow testing library", () => {
   let car: Car;
   let carKeys: CarKeys[];
   let renderResult: RenderResult;
@@ -38,10 +34,10 @@ describe('CarViewRow testing library', () => {
   beforeEach(() => {
     car = {
       id: 1,
-      make: 'Ford',
-      model: 'Fusion Hybrid',
+      make: "Ford",
+      model: "Fusion Hybrid",
       year: 2020,
-      color: 'red',
+      color: "red",
       price: 45000,
     };
 
@@ -61,12 +57,12 @@ describe('CarViewRow testing library', () => {
             onDeleteCar={deleteCarSpy}
           />
         </tbody>
-      </table>,
+      </table>
     );
   });
 
-  test('render CarViewRow component', () => {
-    const cells = renderResult.getAllByRole('cell');
+  test("render CarViewRow component", () => {
+    const cells = renderResult.getAllByRole("cell");
 
     expect(cells.length).toBe(7);
 
@@ -75,13 +71,13 @@ describe('CarViewRow testing library', () => {
     });
   });
 
-  test('click edit', () => {
-    fireEvent.click(renderResult.getByText('Edit'));
+  test("click edit", () => {
+    fireEvent.click(renderResult.getByText("Edit"));
     expect(editCarSpy).toHaveBeenCalledWith(1);
   });
 
-  test('click delete', () => {
-    fireEvent.click(renderResult.getByText('Delete'));
+  test("click delete", () => {
+    fireEvent.click(renderResult.getByText("Delete"));
     expect(deleteCarSpy).toHaveBeenCalledWith(1);
   });
 });

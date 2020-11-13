@@ -1,22 +1,22 @@
-import React from 'react';
-import { render, RenderResult, fireEvent } from '@testing-library/react';
+import React from "react";
+import { render, RenderResult, fireEvent } from "@testing-library/react";
 
-import { NewCar, NewCarKeys } from '../models/car';
-import { CarForm } from '../components/CarForm';
+import { NewCar, NewCarKeys } from "../models/cars";
+import { CarForm } from "../components/CarForm";
 
-describe('CarViewRow testing library', () => {
+describe("CarForm testing library", () => {
   let car: NewCar;
-  let textInputKeys: NewCarKeys[] = ['make', 'model', 'color'];
-  let numberInputKeys: NewCarKeys[] = ['year', 'price'];
+  let textInputKeys: NewCarKeys[] = ["make", "model", "color"];
+  let numberInputKeys: NewCarKeys[] = ["year", "price"];
   let renderResult: RenderResult;
   let submitCarSpy: jest.Mock;
 
   beforeEach(() => {
     car = {
-      make: 'Ford',
-      model: 'Fusion Hybrid',
+      make: "Ford",
+      model: "Fusion Hybrid",
       year: 2020,
-      color: 'red',
+      color: "red",
       price: 45000,
     };
 
@@ -25,14 +25,14 @@ describe('CarViewRow testing library', () => {
 
   beforeEach(() => {
     renderResult = render(
-      <CarForm buttonText="Add Car" onSubmitCar={submitCarSpy} />,
+      <CarForm buttonText="Add Car" onSubmitCar={submitCarSpy} />
     );
   });
 
-  test('render CarViewRow component', () => {
+  test("render CarViewRow component", () => {
     const { getAllByRole } = renderResult;
 
-    const textboxInputs = getAllByRole('textbox');
+    const textboxInputs = getAllByRole("textbox");
     expect(textboxInputs.length).toBe(3);
     textboxInputs.forEach((input: HTMLElement, index: number) => {
       const evt = {
@@ -45,7 +45,7 @@ describe('CarViewRow testing library', () => {
       fireEvent.change(input, evt);
     });
 
-    const spinbuttonInputs = getAllByRole('spinbutton');
+    const spinbuttonInputs = getAllByRole("spinbutton");
     expect(spinbuttonInputs.length).toBe(2);
     spinbuttonInputs.forEach((input: HTMLElement, index: number) => {
       const evt = {
@@ -58,7 +58,7 @@ describe('CarViewRow testing library', () => {
       fireEvent.change(input, evt);
     });
 
-    const submitButton = renderResult.getByRole('button');
+    const submitButton = renderResult.getByRole("button");
 
     fireEvent.click(submitButton);
     expect(submitCarSpy).toHaveBeenCalledWith(car);
