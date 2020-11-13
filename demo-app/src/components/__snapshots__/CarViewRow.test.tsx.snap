@@ -1,0 +1,50 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`snapshot CarViewRow component 1`] = `
+<tr>
+  <td
+    className="col-body"
+  >
+    1
+  </td>
+  <td
+    className="col-body"
+  >
+    Ford
+  </td>
+  <td
+    className="col-body"
+  >
+    Fusion Hybrid
+  </td>
+  <td
+    className="col-body"
+  >
+    2020
+  </td>
+  <td
+    className="col-body"
+  >
+    red
+  </td>
+  <td
+    className="col-body"
+  >
+    45000
+  </td>
+  <td>
+    <button
+      onClick={[Function]}
+      type="button"
+    >
+      Edit
+    </button>
+    <button
+      onClick={[Function]}
+      type="button"
+    >
+      Delete
+    </button>
+  </td>
+</tr>
+`;
